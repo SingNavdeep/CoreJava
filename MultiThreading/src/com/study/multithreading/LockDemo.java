@@ -1,5 +1,8 @@
 package com.study.multithreading;
 
+/**
+ * Class demonstrates usage of java.util.concurrent.locks.Lock to create sync blocks
+ */
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,6 +15,8 @@ public class LockDemo
 	{
 		for(int i = 0; i < 10000; i++)
 		{
+			//critical section inside lock and unlock
+			//we dont want 2 threads to simultaneously access counter
 			lock.lock();
 			counter++;
 			lock.unlock();

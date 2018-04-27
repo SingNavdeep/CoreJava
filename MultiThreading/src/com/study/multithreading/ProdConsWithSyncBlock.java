@@ -1,5 +1,11 @@
 package com.study.multithreading;
 
+/**
+ * Producer- consumer with sync blocks.
+ * Note the usage of an arbritrary object to acquire a lock.
+ * If we obtain a lock on an instance or processor, then threads accessing any of the methods is blocked.
+ * We do not want a thread executing producer to block while a thread is executing consumer.
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +20,19 @@ class Processor {
 	{
 		while(true)
 		{
-			if (intList.size() == UPPER)
+			synchronized (lock)
 			{
-				synchronized (lock)
+				//if list is not full, add element, else wait
+				if(intList.size() < UPPER)
+				{
+					System.out.println("Adding to list: " + counter);
+					intList.add(counter++);
+					lock.notify();
+				}
+				else
 				{
 					System.out.println("Waiting for list to be emptied...");
 					lock.wait();
-				}
-			}
-			else
-			{
-				System.out.println("Adding..." + counter);
-				synchronized (lock)
-				{
-					intList.add(counter++);
-					lock.notify();
 				}
 			}
 			
@@ -42,6 +46,8 @@ class Processor {
 		{
 			if (intList.size() == LOWER)
 			{
+				//lock acquired here to enable waiting.
+				//else thread will continue in while loop thereby wasting CPU cycles.
 				synchronized (lock)
 				{
 					System.out.println("waiting for list to be populated...");
