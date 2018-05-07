@@ -2,6 +2,8 @@ package com.study.multithreading;
 
 /**
  * producer consumer with Lock and condition.
+ * Note that with Locks, a critical section has to be locked and unlocked manually, unlike sync blocks.
+ * 
  * 
  */
 import java.util.ArrayList;
